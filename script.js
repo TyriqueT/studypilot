@@ -145,7 +145,15 @@ function renderAssignments() {
   assignmentList.replaceChildren();
 
   const filter = filterInput.value;
-  let visible = assignments.filter(task => {
+  let visible = assignments.filter(task => {const body = makeElement("div", "task-body");
+body.append(
+  makeElement("p", "task-title", task.title),
+  makeElement(
+    "div",
+    "task-meta",
+    `${task.subject} · Due ${formatDate(task.dueDate)} · ${task.hours} hr`
+  )
+);
     if (filter === "active") return !task.completed;
     if (filter === "completed") return task.completed;
     return true;
@@ -190,15 +198,44 @@ function renderAssignments() {
       renderAll();
     });
 
-    const body = makeElement("div", "task-body");
-    body.append(
-      makeElement("p", "task-title", task.title),
-      makeElement(
-        "div",
-        "task-meta",
-        `${task.subject} · Due ${formatDate(task.dueDate)} · ${task.hours} hr`
-      )
-    );
+   
+const body = makeElement("div", "task-body");
+const meta = makeElement(
+  "div",
+  "task-meta",
+  `${task.subject} · Due ${formatDate(task.dueDate)} · ${task.hours} hr`
+);
+
+body.append(
+  makeElement("p", "task-title", task.title),
+  meta
+);
+
+if (!task.completed) {
+  const days = daysUntil(task.dueDate);
+  let label;
+  let className;
+
+  if (days < 0) {
+    label = `Overdue by ${Math.abs(days)} day${Math.abs(days) === 1 ? "" : "s"}`;
+    className = "deadline-overdue";
+  } else if (days === 0) {
+    label = "Due today";
+    className = "deadline-today";
+  } else if (days === 1) {
+    label = "Due tomorrow";
+    className = "deadline-soon";
+  } else if (days <= 3) {
+    label = `Due in ${days} days`;
+    className = "deadline-soon";
+  } else {
+    label = "Plenty of time";
+    className = "deadline-later";
+  }
+
+  body.append(makeElement("span", `deadline-label ${className}`, label));
+}
+
 
     const actions = makeElement("div", "task-actions");
     const priority = getPriority(task);
@@ -324,3 +361,78 @@ form.addEventListener("submit", event => {
 filterInput.addEventListener("change", renderAssignments);
 
 renderAll();
+
+
+/* Focus timer: 25-minute study sessions */
+const timerDisplay = document.getElementById("timer-display");
+const timerStatus = document.getElementById("timer-status");
+const timerStart = document.getElementById("timer-start");
+const timerReset = document.getElementById("timer-reset");
+
+const FOCUS_SECONDS = 25 * 60;
+let secondsRemaining = FOCUS_SECONDS;
+let timerInterval = null;
+
+function updateTimerDisplay() {
+  const minutes = Math.floor(secondsRemaining / 60);
+  const seconds = secondsRemaining % 60;
+  const timeText =
+    `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
+
+  timerDisplay.textContent = timeText;
+  timerDisplay.setAttribute("aria-label", `${minutes} minutes ${seconds} seconds remaining`);
+  document.title = timerInterval
+    ? `${timeText} · StudyPilot`
+    : "StudyPilot | Your Learning, On Course";
+}
+
+function stopTimer() {
+  if (timerInterval !== null) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+  timerStart.textContent = "Start focus";
+}
+
+function startTimer() {
+  if (timerInterval !== null) {
+    stopTimer();
+    timerStatus.textContent = "Paused. Resume when you're ready.";
+    updateTimerDisplay();
+    return;
+  }
+
+  if (secondsRemaining <= 0) {
+    timerStatus.textContent = "Session complete! Reset for another round.";
+    return;
+  }
+
+  timerStart.textContent = "Pause";
+  timerStatus.textContent = "You're doing great. Keep your focus.";
+
+  timerInterval = setInterval(() => {
+    secondsRemaining -= 1;
+    updateTimerDisplay();
+
+    if (secondsRemaining <= 0) {
+      stopTimer();
+      secondsRemaining = 0;
+      updateTimerDisplay();
+      timerStatus.textContent = "Focus session complete! Take a short break.";
+      timerStart.textContent = "Completed";
+      timerStart.disabled = true;
+    }
+  }, 1000);
+}
+
+timerStart.addEventListener("click", startTimer);
+
+timerReset.addEventListener("click", () => {
+  stopTimer();
+  secondsRemaining = FOCUS_SECONDS;
+  timerStart.disabled = false;
+  timerStatus.textContent = "Ready when you are.";
+  updateTimerDisplay();
+});
+
+updateTimerDisplay();

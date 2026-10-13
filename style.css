@@ -218,3 +218,77 @@ input::placeholder { color: #a7aabd; }
   .form-row { gap: 9px; }
   .page-footer { flex-direction: column; }
 }
+
+/* StudyPilot focus timer */
+.timer-display {
+  text-align: center;
+  font-family: "Manrope", sans-serif;
+  font-size: clamp(44px, 5vw, 58px);
+  font-weight: 800;
+  letter-spacing: -2px;
+  padding: 15px 0 4px;
+  font-variant-numeric: tabular-nums;
+}
+
+.timer-status {
+  color: var(--muted);
+  font-size: 12px;
+  text-align: center;
+  min-height: 18px;
+  margin: 0 0 18px;
+}
+
+.timer-actions {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 9px;
+}
+
+.secondary-button {
+  background: #f0eeff;
+  color: var(--purple-dark);
+  border: 1px solid #e4e0ff;
+  border-radius: 10px;
+  padding: 12px 15px;
+  font-weight: 700;
+}
+
+.secondary-button:hover {
+  background: #e5e1ff;
+}
+
+button:focus-visible, a:focus-visible {
+  outline: 3px solid #978bff;
+  outline-offset: 3px;
+}
+
+
+/* Deadline indicators */
+.deadline-label {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 5px 8px;
+  border-radius: 6px;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.deadline-overdue {
+  background: #fff0ed;
+  color: #c34f42;
+}
+
+.deadline-today {
+  background: #fff0df;
+  color: #a66515;
+}
+
+.deadline-soon {
+  background: #eeebff;
+  color: #5548c9;
+}
+
+.deadline-later {
+  background: #e5f7ef;
+  color: #258463;
+}
