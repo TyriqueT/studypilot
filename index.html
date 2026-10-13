@@ -1,0 +1,171 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="StudyPilot helps students organize assignments, deadlines, and study progress.">
+  <title>StudyPilot | Your Learning, On Course</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="StudyPilot home">
+        <span class="brand-icon">✦</span>
+        <span>StudyPilot</span>
+      </a>
+
+      <p class="nav-label">WORKSPACE</p>
+      <nav>
+        <a class="nav-link active" href="#dashboard">▦ <span>Dashboard</span></a>
+        <a class="nav-link" href="#assignments">☷ <span>Assignments</span></a>
+        <a class="nav-link" href="#study-tips">✧ <span>Study tips</span></a>
+      </nav>
+
+      <div class="sidebar-note">
+        <span class="note-icon">✦</span>
+        <h3>Small steps add up.</h3>
+        <p>Focus on one task at a time. You've got this!</p>
+      </div>
+
+      <p class="sidebar-footer">YOUR SPACE TO SUCCEED</p>
+    </aside>
+
+    <main class="main-content" id="dashboard">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">YOUR PERSONAL STUDY SPACE</p>
+          <h1>Let's make progress.</h1>
+          <p class="subtitle">Plan your work. Protect your focus. Reach your goals.</p>
+        </div>
+        <div class="today-chip"><span class="status-dot"></span> Study mode</div>
+      </header>
+
+      <section class="stats-grid" aria-label="Study statistics">
+        <article class="stat-card">
+          <div class="stat-top"><span>All assignments</span><span class="stat-icon purple">▤</span></div>
+          <p class="stat-number" id="total-count">0</p>
+          <p class="stat-caption">Tasks on your list</p>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Completed</span><span class="stat-icon green">✓</span></div>
+          <p class="stat-number" id="completed-count">0</p>
+          <p class="stat-caption">Tasks you've finished</p>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Still to do</span><span class="stat-icon orange">◷</span></div>
+          <p class="stat-number" id="remaining-count">0</p>
+          <p class="stat-caption">Tasks left to tackle</p>
+        </article>
+        <article class="stat-card">
+          <div class="stat-top"><span>Progress</span><span class="stat-icon blue">↗</span></div>
+          <p class="stat-number" id="progress-number">0%</p>
+          <div class="progress-track"><div id="progress-bar" class="progress-fill"></div></div>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel assignments-panel" id="assignments">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">STAY ORGANIZED</p>
+              <h2>Your assignments</h2>
+            </div>
+            <span class="count-pill" id="list-count">0 tasks</span>
+          </div>
+
+          <form id="assignment-form">
+            <div class="field">
+              <label for="assignment-title">Assignment name</label>
+              <input id="assignment-title" name="title" type="text"
+                placeholder="e.g. Algebra homework" maxlength="100" required>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="assignment-subject">Subject</label>
+                <input id="assignment-subject" name="subject" type="text"
+                  placeholder="e.g. Math" maxlength="50" required>
+              </div>
+              <div class="field">
+                <label for="assignment-due">Due date</label>
+                <input id="assignment-due" name="dueDate" type="date" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="field">
+                <label for="assignment-hours">Estimated study time</label>
+                <select id="assignment-hours" name="hours">
+                  <option value="0.5">30 minutes</option>
+                  <option value="1" selected>1 hour</option>
+                  <option value="2">2 hours</option>
+                  <option value="3">3 hours</option>
+                  <option value="4">4+ hours</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="assignment-difficulty">Difficulty</label>
+                <select id="assignment-difficulty" name="difficulty">
+                  <option value="easy">Easy</option>
+                  <option value="medium" selected>Medium</option>
+                  <option value="hard">Hard</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="primary-button" type="submit">+ Add assignment</button>
+            <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+          </form>
+
+          <div class="list-heading">
+            <h3>Task list</h3>
+            <label class="filter-label" for="task-filter">Show
+              <select id="task-filter">
+                <option value="all">All tasks</option>
+                <option value="active">To do</option>
+                <option value="completed">Completed</option>
+              </select>
+            </label>
+          </div>
+
+          <div id="assignment-list" class="assignment-list">
+            <div class="empty-state">
+              <span class="empty-icon">✧</span>
+              <h3>Your study journey starts here</h3>
+              <p>Add your first assignment using the form above.</p>
+            </div>
+          </div>
+        </section>
+
+        <aside class="right-column">
+          <section class="panel priorities-panel">
+            <p class="eyebrow">MAKE THE NEXT MOVE</p>
+            <h2>Smart priorities</h2>
+            <p class="panel-description">Use deadlines and difficulty to decide what deserves your attention first.</p>
+            <div id="priority-list" class="priority-list">
+              <p class="muted">Add an assignment to see your recommended priorities.</p>
+            </div>
+          </section>
+
+          <section class="focus-card" id="study-tips">
+            <span class="focus-symbol">✦</span>
+            <p class="eyebrow">A LITTLE REMINDER</p>
+            <h2>Progress, not perfection.</h2>
+            <p>Try studying for 25 minutes, then take a 5-minute break. One focused session is a great start.</p>
+            <div class="focus-rule"></div>
+            <p class="focus-footer">YOUR NEXT STEP IS WHAT MATTERS.</p>
+          </section>
+        </aside>
+      </div>
+
+      <footer class="page-footer">
+        <span>StudyPilot</span>
+        <span>Your goals. Your pace. Your progress.</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
